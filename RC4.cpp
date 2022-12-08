@@ -32,14 +32,10 @@ void RC4::Encrypt(string text,string* o_buff) {
 	this->Init_S();
 	this->Swap_S();
 	int i{ 0 };
-	int j = 0;
-	char temp[100];
+	int j{ 0 };
+	char temp[4];
 	int index{ 0 };
-	int flag = 0;
 	while(text[index]) {
-		if(index == 2800 || flag ) {
-			flag = 1;
-		}
 		i = (i + 1) % 256;
 		j = (j + S[i]) % 256;
 		swap(S[i], S[j]);
@@ -76,15 +72,10 @@ void RC4::Decrypt( string* o_buff) {
 	int index{ 0 };
 	this->Init_S();
 	this->Swap_S();
-	int i = 0;
-	int j = 0;
-	char temp[100];
-	int flag = 0;
+	int i{ 0 };
+	int j{ 0 };
+	char temp[4];
 	while(index<text_str.length()) {
-		if(index >= 5500) {
-			memset(&temp[0], 0, sizeof(temp));
-			flag = 1;
-		}
 		i = (i + 1) % 256;
 		j = (j + S[i]) % 256;
 		swap(S[i], S[j]);
