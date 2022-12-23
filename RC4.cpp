@@ -1,5 +1,43 @@
 #include "RC4.h"
 
+RC4::RC4(int input_type, int action){
+	//key initilizer
+	string key ="";
+	cout << "input key: ";
+	cin >> key;
+	File save_key;
+	save_key.Write(key);
+	system("cls");
+	
+	key_length = key.length();
+	this->Init_T(key);
+	this->Init_S();
+	
+	
+	string text_buffor = "";
+	string buffor = "";
+	switch(input_type) {
+	case 1: {
+		cout << "input text: \n"; cin >> text_buffor; system("cls");
+		
+		switch(action) {
+		case 1: this->Encrypt(text_buffor, &this->text_str); this->print_text();  break;
+		case 2: this->text_str = text_buffor; this->Decrypt(&buffor); cout << buffor;; break;
+		}
+		break;
+	}
+	case 2: {
+		File fin;
+		text_buffor= fin.console_file_read();
+		
+		switch(action) {
+			case 1: this->Encrypt(text_buffor, &this->text_str); fin.Write(this->text_str, 1);  break;
+			case 2: this->text_str = text_buffor; this->Decrypt(&buffor); fin.Write(buffor, 2); break;
+			}
+		break;
+		}
+	}	
+}
 RC4::RC4(string text, string key) {
 	key_length = key.length();
 	File fout;
@@ -33,14 +71,17 @@ void RC4::Encrypt(string text,string* o_buff) {
 	this->Swap_S();
 	int i{ 0 };
 	int j{ 0 };
-	char temp[4];
+	char temp[10];
 	int index{ 0 };
 	while(text[index]) {
 		i = (i + 1) % 256;
 		j = (j + S[i]) % 256;
 		swap(S[i], S[j]);
 		int wk = S[(S[i] + S[j]) % 256];
-		sprintf(temp,"%.2X", ((int)text[index] ^ wk)); //convert number to hex
+		if((int)text[index] > 256) {
+			sprintf(temp, "X%.2X", ((int)(text[index] - 256) ^ wk));
+		}
+		else sprintf(temp,"%.2X", ((int)text[index] ^ wk)); //convert number to hex
 		(*o_buff).append(temp);
 		index++;
 	}
@@ -59,28 +100,24 @@ int hexToDecimal_C(char hex) {
 	}
 	return decimal;
 }
-int hexToDecimal(string hex) {
-	int decimal = 0;
-	int power = 1;
-	for(int i = hex.length() - 1; i >= 0; i--) {
-		decimal += hexToDecimal_C(hex[i]) * power;
-		power *= 16;
-	}
-	return decimal;
-}
 void RC4::Decrypt( string* o_buff) {
 	int index{ 0 };
 	this->Init_S();
 	this->Swap_S();
 	int i{ 0 };
 	int j{ 0 };
-	char temp[4];
+	char temp[10];
+	int  hexa=0;
 	while(index<text_str.length()) {
 		i = (i + 1) % 256;
 		j = (j + S[i]) % 256;
 		swap(S[i], S[j]);
 		int wk = S[(S[i] + S[j]) % 256];
-		int hexa = (hexToDecimal_C(text_str[index])*16+ hexToDecimal_C(text_str[index+1]));
+		if((int)text_str[index] == 88) {
+			index++;
+			hexa = (hexToDecimal_C(text_str[index]) * 16 + hexToDecimal_C(text_str[index + 1]))+256;
+		}
+		else hexa = (hexToDecimal_C(text_str[index])*16+ hexToDecimal_C(text_str[index+1]));
 		sprintf(temp, "%c", hexa ^ wk); //convert number to hex
 		(*o_buff).append(temp);
 		index+=2;
@@ -100,4 +137,7 @@ void RC4::print_T() {
 		if(!((i+1) % 10)) printf("\n");
 	}
 	printf("\n\n\n");
+}
+void RC4::print_text() {
+	cout << text_str;
 }
