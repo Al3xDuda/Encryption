@@ -1,28 +1,39 @@
 #include "RC4.h"
 #include "Manage_File.h"
-#define KEY "mention"
+
 using namespace std;
-//#define SHOW 
 
 int main() {
-	char* test = new char[256];
-	cout << "wpisz nazwe pliku ktory chcesz zaszyfrowac: ";
-	cin >> test;
-	File nazwapliku(test);
-	string buffor = nazwapliku.Return_Buffor();
-#ifdef SHOW
-	cout << nazwapliku.Return_File_Type() << endl;
-	cout << endl;
-	cout << buffor << endl;
-#endif 
-	RC4 var = RC4(buffor, KEY);
-#ifdef SHOW
-	var.print_S();
-	var.print_T();
-	for(int i = 0; i < nazwapliku.Return_Buffor().length() + 1; i++) {
-		printf("%c ", buffor[i]);
+	int method = 0;
+	cout << "choose coding method: \n";
+	cout << "1-RC4\n";
+	cin >> method;
+	system("cls");
+	switch(method) {
+		case 1:break;
+		default: cout << "None actions match your input\n"; return 0;
 	}
-#endif
+
+	int input_type = 0;
+	cout << "Do you wish to:\n1-input text\n2-read from file\n";
+	cin >> input_type;
+	system("cls");
+	switch(method) {
+		case 1:break; case 2:break;
+		default: cout << "None actions match your input\n"; return 0;;
+	}
+
+	cout << "1-encode\n2-decode\n";
+	int action = 0;
+	cin >> action;
+	switch(method) {
+		case 1:break; case 2:break;
+		default: cout << "None actions match your input\n"; return 0;
+	}
+	system("cls");
+
+	switch(method) {
+		case 1: RC4(input_type, action); break;
+	}
 	return 0;
 }
-
