@@ -1,8 +1,8 @@
-Projekt na celu ma przyjęcie pliku, zaszyfrowanie go metodą RC4 
-za pomocą klucza podanego przez użytkownika lub wczytanego z pliku, następnie zwrócenie zaszyfrowanej 
-wiadomożci do podanego pliku.
+Projekt na celu ma przyjęcie pliku, zaszyfrowanie lub odszyfrowanie go metodą RC4 lub szyfrem Cezara
+za pomocą klucza podanego przez użytkownika następnie zwrócenie zaszyfrowanej 
+wiadomożci do pliku.
 
-Następnie zajmę się możliwością dekryptacji wiadomości z podanym hasłem.
+
 
 
 
