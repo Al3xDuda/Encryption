@@ -1,7 +1,6 @@
 #include "RC4.h"
 #include "Manage_File.h"
 #include "Caesar.h"
-#define KEY "mention"
 
 using namespace std;
 
