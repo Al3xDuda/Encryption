@@ -1,7 +1,6 @@
 #include "RC4.h"
 
 RC4::RC4(string text, int action) {
-	
 	//key initilizer
 	string key = "";
 	cout << "input key: ";
@@ -11,8 +10,6 @@ RC4::RC4(string text, int action) {
 	save_key.Write(key);
 	//clear console
 	system("cls");
-	
-	
 	//initiate S and T
 	key_length = key.length();
 	this->Init_T(key);
@@ -26,9 +23,9 @@ RC4::RC4(string text, int action) {
 	//depending on action encrypt or decrypt
 	switch(action) {
 		//use encrypt on current object with text and write output to file
-		case 1: this->Encrypt(text, &this->text_str); fin.Write(this->text_str, 1);  break;
+	case 1: this->Encrypt(text, &this->text_str); fin.Write(this->text_str, 1);  break;
 		//use decrypt on current object with text and write output to file
-		case 2: this->text_str = text; this->Decrypt(&buffor); fin.Write(buffor, 2); break;
+	case 2: this->text_str = text; this->Decrypt(&buffor); fin.Write(buffor, 2); break;
 	}
 }
 void RC4::Swap_S() {
@@ -58,7 +55,8 @@ void RC4::Encrypt(string text, string* o_buff) {
 	int i{ 0 };
 	int j{ 0 };
 	//temporary variable to store letter/hex numbers
-	char temp[3];
+	char* temp = new char[3];
+	
 	int index{ 0 };
 	//loop through text
 	while(text[index]) {
@@ -71,8 +69,13 @@ void RC4::Encrypt(string text, string* o_buff) {
 		//get index of letter
 		int wk = S[(S[i] + S[j]) % 256];
 		//try to handle weird characters
-		if((int)text[index] > 256) {
-			sprintf(temp, "X%.2X", ((int)(text[index] - 256) ^ wk));
+		if((int)text[index] < 0) {
+			
+			temp[0] = 'x';
+			(*o_buff).append(temp);
+			text[index] += 'x';
+			printf("%i", text[index]);
+			sprintf(temp, "%.2X", ((int)text[index] ^ wk));
 		}
 		else sprintf(temp, "%.2X", ((int)text[index] ^ wk)); //convert number to hex
 		//append to output string
@@ -81,7 +84,9 @@ void RC4::Encrypt(string text, string* o_buff) {
 		index++;
 	}
 	//save text
+	//delete[] temp;
 	text_str = *o_buff;
+	
 }
 //convert hex to decimal number
 int hexToDecimal_C(char hex) {
@@ -120,7 +125,7 @@ void RC4::Decrypt(string* o_buff) {
 		//get index of letter
 		int wk = S[(S[i] + S[j]) % 256];
 		//convert hex to decimal
-		if((int)text_str[index] == 88) {
+		if((int)text_str[index] == 'x') {
 			index++;
 			hexa = (hexToDecimal_C(text_str[index]) * 16 + hexToDecimal_C(text_str[index + 1])) + 256;
 		}
