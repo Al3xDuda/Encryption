@@ -1,6 +1,6 @@
-Projekt na celu ma przyjęcie pliku, zaszyfrowanie lub odszyfrowanie go metodą RC4 lub szyfrem Cezara
-za pomocą klucza podanego przez użytkownika następnie zwrócenie zaszyfrowanej 
-wiadomożci do pliku.
+The project to take a file, encrypt or decrypt it using RC4 or Caesar cipher method
+using a key provided by the user then returning the encrypted 
+message to the file.
 
 
 
